@@ -135,6 +135,10 @@ export const useDeletePost = () => {
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();
+
+  //NextJS caches shit. And because shit is being updated, we need to invalidate
+  //a bunch of stuff, so it's updated on the page.
+  //InvalidateQueries essentially means to clear the cache for this post/page/whatever
   return useMutation({
     mutationFn: ({ postId, likesArray }: { postId: string; likesArray: string[] }) => likePost(postId, likesArray),
     onSuccess: (data) => {

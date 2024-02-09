@@ -9,7 +9,7 @@ import RootLayout from "./_root/RootLayout";
 
 import { Toaster } from "@/components/ui/toaster";
 
-// 2:48:18
+// 5:31:38
 // https://www.youtube.com/watch?v=_W3R2VwRyF4
 
 const App = () => {
