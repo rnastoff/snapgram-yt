@@ -64,7 +64,7 @@ export const useGetPosts = () => {
         // return null;
       }
 
-      const lastId = lastPage.documents[lastPage?.documents.length - 1].$id;
+      const lastId = lastPage?.documents[lastPage?.documents.length - 1].$id;
 
       return lastId;
     },
