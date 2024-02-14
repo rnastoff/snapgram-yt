@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
 import {
@@ -35,7 +40,8 @@ export const useCreateUserAccount = () => {
 
 export const useSignInAccount = () => {
   return useMutation({
-    mutationFn: (user: { email: string; password: string }) => signInAccount(user),
+    mutationFn: (user: { email: string; password: string }) =>
+      signInAccount(user),
   });
 };
 
@@ -49,22 +55,21 @@ export const useSignOutAccount = () => {
 // POST QUERIES
 // ============================================================
 
-// export const useGetPosts = () => {
-//   return useInfiniteQuery({
-//     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-//     queryFn: getInfinitePosts as any,
-//     getNextPageParam: (lastPage: any) => {
-//       // If there's no data, there are no more pages.
-//       if (lastPage && lastPage.documents.length === 0) {
-//         return null;
-//       }
+export const useGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: getInfinitePosts,
+    getNextPageParam: (lastPage) => {
+      if (lastPage && lastPage.documents.length === 0) {
+        // return null;
+      }
 
-//       // Use the $id of the last document as the cursor.
-//       const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
-//       return lastId;
-//     },
-//   });
-// };
+      const lastId = lastPage.documents[lastPage?.documents.length - 1].$id;
+
+      return lastId;
+    },
+  });
+};
 
 export const useSearchPosts = (searchTerm: string) => {
   return useQuery({
@@ -124,7 +129,8 @@ export const useUpdatePost = () => {
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ postId, imageId }: { postId?: string; imageId: string }) => deletePost(postId, imageId),
+    mutationFn: ({ postId, imageId }: { postId?: string; imageId: string }) =>
+      deletePost(postId, imageId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
@@ -140,7 +146,13 @@ export const useLikePost = () => {
   //a bunch of stuff, so it's updated on the page.
   //InvalidateQueries essentially means to clear the cache for this post/page/whatever
   return useMutation({
-    mutationFn: ({ postId, likesArray }: { postId: string; likesArray: string[] }) => likePost(postId, likesArray),
+    mutationFn: ({
+      postId,
+      likesArray,
+    }: {
+      postId: string;
+      likesArray: string[];
+    }) => likePost(postId, likesArray),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id],
@@ -161,7 +173,8 @@ export const useLikePost = () => {
 export const useSavePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ userId, postId }: { userId: string; postId: string }) => savePost(userId, postId),
+    mutationFn: ({ userId, postId }: { userId: string; postId: string }) =>
+      savePost(userId, postId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
